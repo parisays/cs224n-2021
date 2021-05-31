@@ -181,7 +181,7 @@ class CharCorruptionDataset(Dataset):
         suffix_len = prefix_len + masked_content_len
 
         prefix = truncated_doc[:prefix_len]
-        masked_content = truncated_doc[prefix_len, prefix_len + masked_content_len]
+        masked_content = truncated_doc[prefix_len: prefix_len + masked_content_len]
         suffix = truncated_doc[suffix_len:]
         # 3.
         masked_string = prefix + self.MASK_CHAR + \
