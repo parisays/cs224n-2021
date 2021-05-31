@@ -156,8 +156,8 @@ elif args.function == 'finetune':
                 num_workers=4
                 )
 
-    text = open(args.finetune_corpus_path, 'r').read() 
-    train_dataset = dataset.NameDataset(text, block_size)
+    corpus = open(args.finetune_corpus_path, 'r').read() 
+    finetune_dataset = dataset.NameDataset(pretrain_dataset, corpus)
 
     model_trainer = trainer.Trainer(model, pretrain_dataset, None, tconf)
     model_trainer.train()
