@@ -92,10 +92,10 @@ if args.function == 'pretrain':
             num_workers=4
             )
 
-    text = open(args.pretrain_corpus_path, 'r').read() 
-    train_dataset = dataset.NameDataset(text, block_size)
+    # text = open(args.pretrain_corpus_path, 'r').read() 
+    # train_dataset = dataset.NameDataset(text, block_size)
 
-    model_trainer = trainer.Trainer(model, train_dataset, None, tconf)
+    model_trainer = trainer.Trainer(model, pretrain_dataset, None, tconf)
     model_trainer.train()
 
     torch.save(model.state_dict(), args.writing_params_path)
@@ -131,7 +131,7 @@ elif args.function == 'finetune':
     #         warmup_tokens=512*20
     #         final_tokens=200*len(pretrain_dataset)*block_size
     #         num_workers=4
-    
+
     if args.reading_params_path is not None:
         model.load_state_dict(torch.load(args.reading_params_path))
 
@@ -156,10 +156,10 @@ elif args.function == 'finetune':
                 num_workers=4
                 )
 
-    text = open(args.finetune_corpus_path, 'r').read() 
-    train_dataset = dataset.NameDataset(text, block_size)
+    # text = open(args.finetune_corpus_path, 'r').read() 
+    # train_dataset = dataset.NameDataset(text, block_size)
 
-    model_trainer = trainer.Trainer(model, train_dataset, None, tconf)
+    model_trainer = trainer.Trainer(model, pretrain_dataset, None, tconf)
     model_trainer.train()
 
     torch.save(model.state_dict(), args.writing_params_path)
