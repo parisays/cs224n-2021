@@ -56,7 +56,7 @@ Don't change above here; write your code below
 
 if args.variant == 'vanilla':
     # pass # TODO [part c]: Make some model here
-    model = model.GPT(mconf)
+    model = model.GPT(mconf).to(device)
 elif args.variant == 'synthesizer':
     pass # TODO [part g]: Make some other model here
 
@@ -159,7 +159,7 @@ elif args.function == 'finetune':
     corpus = open(args.finetune_corpus_path, 'r').read() 
     finetune_dataset = dataset.NameDataset(pretrain_dataset, corpus)
 
-    model_trainer = trainer.Trainer(model, pretrain_dataset, None, tconf)
+    model_trainer = trainer.Trainer(model, finetune_dataset, None, tconf)
     model_trainer.train()
 
     torch.save(model.state_dict(), args.writing_params_path)
