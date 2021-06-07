@@ -194,7 +194,7 @@ class CharCorruptionDataset(Dataset):
                                      masked_content 
                                     #  + \
                                     #      self.PAD_CHAR * (self.block_size - truncate_len - 2)
-        masked_string = masked_string + self.PAD_CHAR * self.block_size - len(masked_string)
+        masked_string = masked_string + self.PAD_CHAR * (self.block_size - len(masked_string))
         # 4.
         input_string = masked_string[:-1]
         output_string = masked_string[1:]
