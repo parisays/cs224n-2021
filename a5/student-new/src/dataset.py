@@ -193,8 +193,11 @@ class CharCorruptionDataset(Dataset):
         output_string = masked_string[1:]
 
         # 5.
-        input_string = torch.LongTensor([self.stoi[char] for char in input_string])
-        output_string = torch.LongTensor([self.stoi[char] for char in output_string])
+        # input_string = torch.LongTensor([self.stoi[char] for char in input_string])
+        # output_string = torch.LongTensor([self.stoi[char] for char in output_string])
+
+        input_string = torch.tensor([self.stoi[c] for c in input_string], dtype=torch.long)
+        output_string = torch.tensor([self.stoi[c] for c in output_string], dtype=torch.long)
 
         return input_string, output_string
         # raise NotImplementedError

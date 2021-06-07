@@ -61,10 +61,10 @@ class SynthesizerAttention(nn.Module):
         super().__init__()
         assert config.n_embd % config.n_head == 0
         # NEW learnable weights
-        self.w1 = nn.Linear(config.n_embd, config.n_embd)
+        self.w1 = nn.Linear(config.n_embd, config.n_embd) # basically A_i in handout
         self.w2 = nn.Parameter(torch.zeros(config.n_embd // config.n_head,
-            config.block_size-1))
-        self.b2 = nn.Parameter(torch.zeros(config.block_size-1))
+            config.block_size-1)) # basically B_i in handout
+        self.b2 = nn.Parameter(torch.zeros(config.block_size-1)) # bias b_2 in handout
         # value projection
         self.value = nn.Linear(config.n_embd, config.n_embd)
         # regularization
@@ -90,4 +90,21 @@ class SynthesizerAttention(nn.Module):
         #   - Consider especially the parameters self.w1, self.w2 and self.b2.
         #       How do these map to the matrices in the handout?
 
-        raise NotImplementedError
+        B, T, C = x.size()
+
+        b = self.x1(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) 
+        v = self.value(x).view(B, T, self.n_head, C // self.n_head).transpose(1, 2) # (B, nh, T, hs)
+        relu = F.relu(b)
+
+        # Synthesizer self-attention; Self-attend
+        att = b @ self.w2[:, :T] + self.b2[:T]
+        att = att.masked_fill(self.mask[:,:,:T,:T] == 0, -1e10) 
+        att = F.softmax(att, dim=-1)
+        att = self.attn_drop(att)
+        y = att @ v 
+        y = y.transpose(1, 2).contiguous().view(B, T, C) 
+
+        # output projection
+        y = self.resid_drop(self.proj(y))
+        return y    
+        # raise NotImplementedError
