@@ -179,7 +179,7 @@ class CharCorruptionDataset(Dataset):
         # 2.
         # masked_content_len = random.randint(int(truncate_len / 8), int(truncate_len * 3 / 8))
         truncate_mean = int(truncate_len/4)
-        masked_content_len = truncate_mean + random.uniform(-1/8, 1/8) * truncate_len
+        masked_content_len = random.uniform(-1/8, 1/8) * truncate_len + truncate_mean
         masked_content_len = int(np.clip(masked_content_len, 1, truncate_len - 2))
 
         prefix_len = random.randint(1, truncate_len - masked_content_len - 1)
