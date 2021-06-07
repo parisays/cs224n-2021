@@ -2,6 +2,7 @@ import random
 import torch
 from torch.utils.data import Dataset
 import argparse
+import numpy as np
 
 """
 The input-output pairs (x, y) of the NameDataset are of the following form:
@@ -171,12 +172,16 @@ class CharCorruptionDataset(Dataset):
         # 0.
         document = self.data[idx]
         # 1.
-        doc_len = len(document)
+        # doc_len = len(document)
         truncate_len = random.randint(4, int(self.block_size * 7 / 8))
-        truncate_len = min(doc_len, truncate_len)
+        # truncate_len = min(doc_len, truncate_len)
         truncated_doc = document[:truncate_len]
         # 2.
-        masked_content_len = random.randint(int(truncate_len / 8), int(truncate_len * 3 / 8))
+        # masked_content_len = random.randint(int(truncate_len / 8), int(truncate_len * 3 / 8))
+        truncate_mean = int(truncate_len/4)
+        masked_content_len = truncate_mean + random.uniform(-1/8, 1/8) * truncate_len
+        masked_content_len = int(np.clip(masked_content_len, 1, truncate_len - 2))
+
         prefix_len = random.randint(1, truncate_len - masked_content_len - 1)
         suffix_len = prefix_len + masked_content_len
 
