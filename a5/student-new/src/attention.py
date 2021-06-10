@@ -97,7 +97,7 @@ class SynthesizerAttention(nn.Module):
         relu = F.relu(b)
 
         # Synthesizer self-attention; Self-attend
-        att = relu @ self.w2 + self.b2
+        att = relu @ self.w2[:, :T] + self.b2[:T]
         
         att = att.masked_fill(self.mask[:,:,:T,:T] == 0, -1e10) 
         att = F.softmax(att, dim=-1)
