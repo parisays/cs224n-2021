@@ -343,4 +343,4 @@ Thumbs.db
 !.vscode/extensions.json
 *.code-workspace
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,vscode,pycharm+all,intellij+all,python,jupyternotebooks
+# End of https://www.toptal.com/developers/gitignore/api/macos,vscode,pycharm+all,intellij+all,python,jupyternotebooks.DS_Store
