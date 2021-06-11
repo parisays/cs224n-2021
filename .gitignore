@@ -344,3 +344,6 @@ Thumbs.db
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,vscode,pycharm+all,intellij+all,python,jupyternotebooks.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
